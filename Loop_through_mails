@@ -1,0 +1,75 @@
+Sub Level3()
+
+    'Needs reference to MS Outlook Object Library
+    
+    Dim olApp As Outlook.Application
+    Dim olNs As Outlook.Namespace
+    Dim olParentFolder As Outlook.MAPIFolder
+    Dim olFolderA As Outlook.MAPIFolder
+    Dim olFolderB As Outlook.MAPIFolder
+    Dim olFolderC As Outlook.MAPIFolder
+    Dim olFolderD As Outlook.MAPIFolder
+    Dim olItem As Outlook.MailItem
+    Dim licz As Long
+    
+    Set olApp = New Outlook.Application
+    Set olNs = olApp.GetNamespace("MAPI")
+
+   ' Set olParentFolder = olNs.Folders("mailbox").Folders("Inbox")
+    'Set olSource = olNs.Session.PickFolder
+    Set olParentFolder = olNs.Session.PickFolder
+   ' Set olParentFolder = olSource.Folders
+    
+emptyRow = WorksheetFunction.CountA(Worksheets("Sheet1").Range("A:A")) + 1
+
+For Each olItem In olParentFolder.Items
+ Worksheets("Sheet1").Cells(emptyRow, 1).Value = olParentFolder.FolderPath
+    Worksheets("Sheet1").Cells(emptyRow, 2).Value = olItem.Sender
+    Worksheets("Sheet1").Cells(emptyRow, 3).Value = Left(olItem.ReceivedTime, 10)
+    emptyRow = emptyRow + 1
+    On Error Resume Next
+Next
+
+For Each olFolderA In olParentFolder.Folders
+'For Each olFolderA In olSource.Folders
+licz = 0
+For Each olItem In olFolderA.Items
+licz = licz + 1
+    Worksheets("Sheet1").Cells(emptyRow, 1).Value = olFolderA.FolderPath
+    Worksheets("Sheet1").Cells(emptyRow, 2).Value = olItem.Sender
+    Worksheets("Sheet1").Cells(emptyRow, 3).Value = Left(olItem.ReceivedTime, 10)
+    emptyRow = emptyRow + 1
+    On Error Resume Next
+Next
+On Error Resume Next
+emptyRow = WorksheetFunction.CountA(Worksheets("Sheet1").Range("A:A")) + 1
+For Each olFolderB In olFolderA.Folders
+For Each olItem In olFolderB.Items
+    Worksheets("Sheet1").Cells(emptyRow, 1).Value = olFolderB.FolderPath
+    Worksheets("Sheet1").Cells(emptyRow, 2).Value = olItem.Sender
+    Worksheets("Sheet1").Cells(emptyRow, 3).Value = Left(olItem.ReceivedTime, 10)
+    emptyRow = emptyRow + 1
+    On Error Resume Next
+Next
+On Error Resume Next
+emptyRow = WorksheetFunction.CountA(Worksheets("Sheet1").Range("A:A")) + 1
+For Each olFolderC In olFolderB.Folders
+For Each olItem In olFolderC.Items
+    Worksheets("Sheet1").Cells(emptyRow, 1).Value = olFolderC.FolderPath
+    Worksheets("Sheet1").Cells(emptyRow, 2).Value = olItem.Sender
+    Worksheets("Sheet1").Cells(emptyRow, 3).Value = Left(olItem.ReceivedTime, 10)
+    emptyRow = emptyRow + 1
+    On Error Resume Next
+Next
+On Error Resume Next
+emptyRow = WorksheetFunction.CountA(Worksheets("Sheet1").Range("A:A")) + 1
+For Each olFolderD In olFolderC.Folders
+For Each olItem In olFolderD.Items
+    Worksheets("Sheet1").Cells(emptyRow, 1).Value = olFolderD.FolderPath
+    Worksheets("Sheet1").Cells(emptyRow, 2).Value = olItem.Sender
+    Worksheets("Sheet1").Cells(emptyRow, 3).Value = Left(olItem.ReceivedTime, 10)
+    emptyRow = emptyRow + 1
+    On Error Resume Next
+Next
+On Error Resume Next
+Next
