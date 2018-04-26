@@ -1,0 +1,16 @@
+Sub Kopiowanie_i_wklejanie()
+'Kopiowanie z Authorisation sheet
+    Worksheets("Authorization sheet").Range("A10:AB10").Copy
+'Otwieranie pliku do którego będzie wklejane
+    Dim y As Workbook
+    Set y = Workbooks.Open("C:\Users\...")
+'Szukanie w otwartym pliku pierwszego wolnego wiersza
+    emptyRow = WorksheetFunction.CountA(y.Sheets("Business Requests").Range("C:C")) + 1
+'Wklejanie w pierwszy wolny wiersz skopiowanego tekstu i dodawanie statusu i uzytkownika
+    y.Sheets("Business Requests").Range("A" & emptyRow).Value = "pending"
+    y.Sheets("Business Requests").Range("B" & emptyRow).Value = Environ("USERNAME")
+    y.Sheets("Business Requests").Range("C" & emptyRow).PasteSpecial Paste:=xlPasteValues
+'Zapisanie i zamknięcie pliku
+    y.Save
+    y.Close
+End Sub
